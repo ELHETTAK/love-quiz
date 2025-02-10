@@ -1,0 +1,272 @@
+@@ -0,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Quiz for Rania Bengana ❤️</title>
+  <!-- Add to Home Screen -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Love Quiz">
+  <link rel="apple-touch-icon" href="icon.png"> <!-- Add a 180x180 PNG icon -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+      color: #fff;
+      padding: 20px;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .question {
+      background: rgba(255, 255, 255, 0.8);
+      color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 500px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1s ease-in-out;
+    }
+    .options {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .options button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background: #ff6f61;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      flex: 1 1 45%; /* Make buttons responsive */
+    }
+    .options button:hover {
+      background: #ff3b2f;
+      transform: scale(1.1);
+    }
+    .heart {
+      font-size: 2rem;
+      animation: float 3s infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .final-message {
+      font-size: 1.5rem;
+      margin-top: 20px;
+      animation: fadeIn 2s ease-in-out;
+    }
+    .correct-answer {
+      animation: correctAnimation 1s ease-in-out;
+    }
+    @keyframes correctAnimation {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #fff;
+      border-radius: 5px;
+      margin: 20px auto;
+      overflow: hidden;
+    }
+    .progress {
+      height: 100%;
+      background: #ff6f61;
+      width: 0;
+      transition: width 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to the Love Quiz, Rania Bengana! ❤️</h1>
+  <div class="heart">❤️❤️❤️</div>
+  <p>Let's play a little game to see how well you know me (and how much I love you).</p>
+  <div id="quiz">
+    <!-- Questions will be dynamically inserted here -->
+  </div>
+  <div id="result" class="final-message" style="display: none;">
+    <!-- Final result and message will be displayed here -->
+  </div>
+  <div class="progress-bar">
+    <div class="progress" id="progress"></div>
+  </div>
+  <audio autoplay loop id="background-music">
+    <source src="die-with-a-smile.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const questions = [
+      {
+        question: "What's my favorite thing about you?",
+        options: ["Your smile", "Your laugh", "Everything about you"],
+        correctAnswer: 2
+      },
+      {
+        question: "What would I do to make you happy?",
+        options: ["Surprise you with gifts", "Spend time with you", "Both 1 and 2"],
+        correctAnswer: 2
+      },
+      {
+        question: "How much do I love you?",
+        options: ["A little", "A lot", "To the moon and back"],
+        correctAnswer: 2
+      },
+      {
+        question: "What’s my favorite nickname for you?",
+        options: ["حبيبتي", "بطتي", "لبوؤتي"],
+        correctAnswer: 2
+      },
+      {
+        question: "What’s our dream together?",
+        options: ["Travel the world", "Build a family", "Both 1 and 2"],
+        correctAnswer: 2
+      },
+      {
+        question: "What’s the first thing I noticed about you?",
+        options: ["Your eyes", "Your smile", "Your kindness"],
+        correctAnswer: 1
+      },
+      {
+        question: "What’s my favorite memory with you?",
+        options: ["Our first date", "Our first trip", "Every moment with you"],
+        correctAnswer: 2
+      },
+      {
+        question: "What’s my favorite way to spend time with you?",
+        options: ["Watching movies", "Talking for hours", "Both 1 and 2"],
+        correctAnswer: 2
+      },
+      {
+        question: "What’s my favorite thing you do for me?",
+        options: ["Make me laugh", "Support me", "Both 1 and 2"],
+        correctAnswer: 2
+      },
+      {
+        question: "What’s my favorite thing to call you?",
+        options: ["My Angel", "My Love", "Both 1 and 2"],
+        correctAnswer: 2
+      },
+      {
+        question: "What’s my favorite thing about us?",
+        options: ["Our bond", "Our memories", "Both 1 and 2"],
+        correctAnswer: 2
+      },
+      {
+        question: "What’s my favorite thing to hear from you?",
+        options: ["I love you", "You’re my everything", "Both 1 and 2"],
+        correctAnswer: 2
+      },
+      {
+        question: "What’s my favorite thing to do for you?",
+        options: ["Make you smile", "Surprise you", "Both 1 and 2"],
+        correctAnswer: 2
+      },
+      {
+        question: "What’s my favorite thing about your personality?",
+        options: ["Your kindness", "Your sense of humor", "Both 1 and 2"],
+        correctAnswer: 2
+      },
+      {
+        question: "What’s my favorite thing about our future?",
+        options: ["Growing old together", "Building a family", "Both 1 and 2"],
+        correctAnswer: 2
+      }
+    ];
+    let currentQuestion = 0;
+    let score = 0;
+    const quizContainer = document.getElementById("quiz");
+    const resultContainer = document.getElementById("result");
+    const progressBar = document.getElementById("progress");
+    function displayQuestion() {
+      const question = questions[currentQuestion];
+      quizContainer.innerHTML = `
+        <div class="question">
+          <p>${question.question}</p>
+          <div class="options">
+            ${question.options.map((option, index) => `
+              <button onclick="checkAnswer(${index})">${option}</button>
+            `).join("")}
+          </div>
+        </div>
+      `;
+      updateProgressBar();
+    }
+    function checkAnswer(selectedIndex) {
+      const question = questions[currentQuestion];
+      if (selectedIndex === question.correctAnswer) {
+        score++;
+        quizContainer.innerHTML = `
+          <div class="question correct-answer">
+            <p>${question.question}</p>
+            <p>Correct! ❤️</p>
+          </div>
+        `;
+      } else {
+        quizContainer.innerHTML = `
+          <div class="question">
+            <p>${question.question}</p>
+            <p>Aww, the correct answer is: ${question.options[question.correctAnswer]} ❤️</p>
+          </div>
+        `;
+      }
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          displayQuestion();
+        } else {
+          showResult();
+        }
+      }, 1500);
+    }
+    function showResult() {
+      quizContainer.style.display = "none";
+      resultContainer.style.display = "block";
+      resultContainer.innerHTML = `
+        <p>Thank you for playing, Rania Bengana! ❤️</p>
+        <p>You scored ${score} out of ${questions.length}.</p>
+        ${score === questions.length ? `
+          <p>You know me so well! I love you more than words can say! ❤️</p>
+        ` : `
+          <p>Even if you didn't get all the answers right, just know this: I LOVE YOU SO MUCH! ❤️</p>
+        `}
+        <p>Here's a special message just for you:</p>
+        <p>To my dearest Rania Bengana,</p>
+        <p>You are my everything. My love, my angel, my honey, my Elhettak. Every moment with you is a treasure, and I’m so grateful to have you in my life. I love you more than anything in this world. ❤️</p>
+        <p>لبوؤتي و بطتي 💕</p>
+      `;
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+    function updateProgressBar() {
+      const progress = ((currentQuestion + 1) / questions.length) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+    // Start the quiz
+    displayQuestion();
+  </script>
+</body>
+</html>
